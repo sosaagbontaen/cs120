@@ -76,6 +76,33 @@ def BC(n, b, k):
         raise ValueError()
     return digits
 
-def radixSort(univsize, base, arr):
-    """TODO: Implement Radix Sort using BC and countSort"""
-    return [] 
+def radixSort(USize, b, kvarr):
+    #print("PREPROCESSED ARRAY: ", arr)
+    #kvarr = [list(pair) for pair in arr]
+    k = math.ceil(math.log(USize)/math.log(b))
+    n = len(kvarr)
+    for kvpair in kvarr:
+        kvpair[1] = BC(kvpair[0],b,k)
+    #print("composition:",kvarr)
+    for j in range(k):
+        for kvpair in kvarr:
+            kvpair[0] = kvpair[1][j]
+        kvarr = countSort(b,kvarr)
+    for kvpair in kvarr:
+        kvpair[0] = 0
+        listOfDigits = kvpair[1]
+        acc = 0
+        for i,currentDigit in enumerate(listOfDigits):
+            
+            currentPlaceVal = currentDigit*(b ** i)
+            #print("i is",i,"so the added val is", currentPlaceVal)
+            acc += currentPlaceVal
+        #print()
+        kvpair[0] += acc
+    return kvarr
+
+# univ = 101
+# base = 10
+# randomArr = [[random.randint(0, 100), []] for _ in range(2**4)]
+# print(radixSort(univ,base,randomArr))
+

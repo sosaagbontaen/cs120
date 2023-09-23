@@ -17,14 +17,14 @@ fastest algorithm with an associated color.
 """
 
 # sets the number of trials to run when timing each algorithm (feel free to change this!)
-N = 2
+N = 1
 
 # generates set of (n, U) combinations within the given constraints 
 n_U_set = list(itertools.product([int(math.pow(2, x)) for x in range(1, 17)], [int(math.pow(2, x)) for x in range(0, 21, 1)]))
 
 def gen_random_arr(n, U):
     """generates random array given n and universe U"""
-    arr = [(random.randint(0, U - 1), "foo") for _ in range(n)]
+    arr = [[random.randint(0, U - 1), "foo"] for _ in range(n)]
     return (arr, U, n)
 
 
