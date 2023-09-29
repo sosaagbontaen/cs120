@@ -27,7 +27,7 @@ eleven_id = 7
 temp_id = 8   # Used only in prog2
 W_id = 9       # Used only in prog2
 
-# TODO: Fill in prog1 with the first RAM program provided in the homework.
+# TODO: Fill in  with the first RAM program provided in the homework.
 prog1 = [8, 
     ['assign', zero_id, 0],
     ['assign', one_id, 1], 

@@ -134,37 +134,50 @@ class BinarySearchTree:
                 print ("No left child")
                 return self
             else:
+                print("ACCESSING LEFT CHILD")
                 A = self.left
         if child_side == "R":
             if self.right == None:
                 print ("No right child")
                 return self
             else:
+                print("ACCESSING RIGHT CHILD")
                 A = self.right
         if direction == "R":
-            oldB = A.left
-            A.left = oldB.right
-            A.size = A.size - oldB.size + oldB.right.size
-            oldB.size = oldB.size - oldB.right.size + A.size
-            oldB.right = A
-            if child_side == "L":
-                self.left = oldB
+            print("RIGHT ROTATION")
+            if A.left != None:
+                oldB_right_size = 0
+                oldB = A.left
+                A.left = oldB.right
+                if oldB.right != None:
+                    oldB_right_size = (oldB.right.size if oldB.right else 0)
+                A.size = A.size - oldB.size + (oldB_right_size if oldB.right else 0)
+                oldB.size = oldB.size - oldB_right_size + A.size
+                oldB.right = A
+                if child_side == "L":
+                    self.left = oldB
+                else:
+                    self.right = oldB
             else:
-                self.right = oldB
+                print("Child doesn't have left child to do a right rotation with.")
                 
         if direction == "L":
-            oldB_left_size = 0
-            oldB = A.right
-            A.right = oldB.left
-            if oldB.left != None:
-                oldB_left_size = oldB.left.size
-            A.size = A.size - oldB.size + oldB_left_size
-            oldB.size = oldB.size - oldB_left_size + A.size
-            oldB.left = A
-            if child_side == "L":
-                self.left = oldB
+            print("LEFT ROTATION")
+            if A.right != None:
+                oldB_left_size = 0
+                oldB = A.right
+                A.right = oldB.left
+                if oldB.left != None:
+                    oldB_left_size = (oldB.left.size if oldB.left else 0)
+                A.size = A.size - oldB.size + oldB_left_size
+                oldB.size = oldB.size - oldB_left_size + A.size
+                oldB.left = A
+                if child_side == "L":
+                    self.left = oldB
+                else:
+                    self.right = oldB
             else:
-                self.right = oldB
+                print("Child doesn't have right child to do a right rotation with.")
         return self
 
 
@@ -176,25 +189,3 @@ class BinarySearchTree:
             self.right.print_bst()
         return self
     
-def print_detailed_tree(v):
-    if v.left != None:
-        print("Left of",v.key,":",v.left.key, "(of size :",v.left.size,")")
-        print_detailed_tree(v.left)
-    if v.right != None:
-        print("Right of",v.key,":",v.right.key, "(of size :",v.right.size,")")
-        print_detailed_tree(v.right)
-    return
-
-T = BinarySearchTree()
-T.key = 15
-T.insert(10).insert(12).insert(5).insert(3).insert(7)
-print("\nBEFORE ROTATION:\n")
-print_detailed_tree(T)
-
-T1 = T.rotate("R","L")
-print("\nAFTER ROTATION:\n")
-print_detailed_tree(T1)
-
-T2 = T1.rotate("L","L")
-print("\nAFTER 2ND ROTATION:\n")
-print_detailed_tree(T2)
