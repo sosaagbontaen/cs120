@@ -27,14 +27,23 @@ eleven_id = 7
 temp_id = 8   # Used only in prog2
 W_id = 9       # Used only in prog2
 
-# TODO: Fill in  with the first RAM program provided in the homework.
+# TODO: Fill in prog1 with the first RAM program provided in the homework.
 prog1 = [8, 
     ['assign', zero_id, 0],
     ['assign', one_id, 1], 
-    ['assign', eleven_id, 11],
+    ['assign', eleven_id, 17],
     ['assign', output_len_id, 1], 
     ['assign', output_ptr_id, 0],
     # TODO: lines 5-8 from pseudocode
+    # LINE 5
+    ['assign', result_id, 17],
+    # Line 6
+    ['read', counter_id, zero_id],
+    # Line 7
+    ['goto', counter_id, 11],
+    #Line 8
+    ['*', result_id, result_id, result_id],
+    ##
     ['-', counter_id, counter_id, one_id],
     ['goto', zero_id, 7],
     ['*', result_id, result_id, eleven_id],
@@ -58,6 +67,18 @@ prog2 = [10,
     ['-', result_id, result_id, temp_id],
     ['-', counter_id, counter_id, one_id],
     # TODO: lines 14-19 from pseudocode
+    # Line 14
+    ['goto', zero_id, 8],
+    # Line 15
+    ['*', result_id, result_id, eleven_id],
+    # Line 16
+    ['/', temp_id, result_id, W_id],
+    # Line 17
+    ['*', temp_id, temp_id, W_id],
+    # Line 18
+    ['-', result_id, result_id, temp_id],
+    # Line 19
+    ['write', output_ptr_id, result_id]
 ]
 
 

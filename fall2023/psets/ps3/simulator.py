@@ -57,7 +57,8 @@ def executeProgram(programArr, inputArr):
     ##@deletelater
     #keeps track of the line we're on?
     programCounter = 0
-
+    # print("🤢COMMAND STARTED🤢")
+    # printState(mem_dict=memory,input_arr=inputArr,program_arr=programArr,var_list=variableList)
     while programCounter < len(programArr):
         # Store the command and the list of operands.
         ##@deletelater | cmd saves the actual name of the command that we're currently on (determined by programcounter)
@@ -81,26 +82,23 @@ def executeProgram(programArr, inputArr):
             #@deletelater
             # WE ARE UPDATING A MEMORY LOCATION BASED ON OUR VARLIST
             memory[variableList[ops[0]]] = variableList[ops[1]]
-            print("written!")
         if cmd == "assign":
             # ['assign', i, j]: assign var_i to the value j
             #@deletelater
             # WE ARE NOT ACTUALLY CHANGING MEMORY, JUST UPDATING A VAR FROM OUR VARLIST WITH ANOTHER VAR ON OUR VARLIST
             #in other words, var_i = var_j
             # TODO: Implement assign.
-            #variableList[ops[0]] = variableList[ops[1]]
-            print("assigned!")
+            variableList[ops[0]] = ops[1]
         # Arithmetic commands
         if cmd == "+":
             # ['+', i, j, k]: compute (var_j + var_k) and store in var_i
-            # TODO: Implement addition.
+            # TODO: Implement addition
             variableList[ops[0]] = variableList[ops[1]] + variableList[ops[2]]
         if cmd == "-":
             # ['-', i, j, k]: compute max((var_j - var_k), 0) and store in var_i.
             # # TODO: Implement subtraction.
             variableList[ops[0]] = max(variableList[ops[1]] - variableList[ops[2]],0)
             #printState(variableList,memory,inputArr,programArr)
-            print("subtracted!")
         if cmd == "*":
             # ['*', i, j, k]: compute (var_j * var_k) and store in var_i.
             # TODO: Implement multiplication.
@@ -110,16 +108,21 @@ def executeProgram(programArr, inputArr):
             # Note that this is integer division. You should return an integer, not a float.
             # Remember division by 0 results in 0.
             # TODO: Implement division.
-            result = variableList[ops[1]] // variableList[ops[2]]
+            result = (variableList[ops[1]] // variableList[ops[2]]) if variableList[ops[2]] > 0 else 0
             variableList[ops[0]] = result if result > 0 else 0
+            # print("💩 I:",variableList[ops[0]], "=",variableList[ops[1]], "//", variableList[ops[2]])
         # Control commands
         if cmd == "goto":
             # ['goto', i, j]: if var_i is equal to 0, go to line j
             # TODO: Implement goto.
             if variableList[ops[0]] == 0:
-                programCounter = variableList[ops[1]]
+                # Go back to like j (aka ops[1]), but also include the line
+                # you're on that has the GOTO
+                programCounter = ops[1] - 1
         
         programCounter += 1
     
+        # printState(mem_dict=memory,input_arr=inputArr,program_arr=programArr,var_list=variableList)
+        # print("⚡COMMAND ENDED⚡")
     # Return the memory starting at output_ptr with length of output_len
     return [memory[i] for i in range(variableList[1], variableList[1]+variableList[2])]
