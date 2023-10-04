@@ -54,10 +54,10 @@ prog1 = [8,
 prog2 = [10, 
     ['assign', zero_id, 0],
     ['assign', one_id, 1], 
-    ['assign', seventeen_id, 11], 
+    ['assign', seventeen_id, 17], 
     ['assign', output_len_id, 1], 
     ['assign', output_ptr_id, 0],
-    ['assign', result_id, 11],
+    ['assign', result_id, 17],
     ['assign', W_id, 2**32],
     ['read', counter_id, zero_id],
     ['goto', counter_id, 15],
@@ -87,9 +87,9 @@ prog2 = [10,
 
 # Time a function call on a given input
 def time_fun (fn, input):
-    start_time = time.time()
+    start_time = time.process_time()
     fn(input)
-    end_time = time.time()
+    end_time = time.process_time()
     return end_time - start_time
 
 def run_prog1 (n):
