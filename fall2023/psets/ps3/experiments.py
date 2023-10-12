@@ -102,13 +102,13 @@ def run_prog2 (n):
 def graph ():
     input_range = range(0, 15)
     prog1_time = [time_fun(run_prog1, i) for i in input_range]
-    prog2_time = [time_fun(run_prog2, i) for i in input_range]
+    #prog2_time = [time_fun(run_prog2, i) for i in input_range]
     plt.plot(input_range, prog1_time, label="Program 1")
-    plt.plot(input_range, prog2_time, label="Program 2")
-    plt.xlabel('Input')
+    #plt.plot(input_range, prog2_time, label="Program 2")
+    plt.xlabel('Input') 
     plt.ylabel('Running Time (in seconds)')
     plt.legend()
-    plt.savefig('running_times.png', bbox_inches = "tight")
+    #plt.savefig('running_times.png', bbox_inches = "tight")
     plt.show()
 
 if __name__ == "__main__":

@@ -80,6 +80,70 @@ divide = [5,
             ['write', output_ptr_id, 3],
         ]
 
+Zinput_len_id = 0
+Zoutput_ptr_id = 1
+Zoutput_len_id = 2
+Zzero_id = 3
+Zone_id = 4
+Zcounter_id = 5
+Zresult_id = 6
+Zseventeen_id = 7
+Ztemp_id = 8   # Used only in prog2
+ZW_id = 9       # Used only in prog2
+##DELTE LATER
+prog1 = [8, 
+    ['assign', Zzero_id, 0],
+    ['assign', Zone_id, 1], 
+    ['assign', Zseventeen_id, 17],
+    ['assign', Zoutput_len_id, 1], 
+    ['assign', Zoutput_ptr_id, 0],
+    # TODO: lines 5-8 from pseudocode
+    # LINE 5
+    ['assign', Zresult_id, 17],
+    # Line 6
+    ['read', Zcounter_id, Zzero_id],
+    # Line 7
+    ['goto', Zcounter_id, 11],
+    #Line 8
+    ['*', Zresult_id, Zresult_id, Zresult_id],
+    ##
+    ['-', Zcounter_id, Zcounter_id, Zone_id],
+    ['goto', Zzero_id, 7],
+    ['*', Zresult_id, Zresult_id, Zseventeen_id],
+    ['write', Zoutput_ptr_id, Zresult_id]
+]
+
+prog2 = [10, 
+    ['assign', Zzero_id, 0],
+    ['assign', Zone_id, 1], 
+    ['assign', Zseventeen_id, 11], 
+    ['assign', Zseventeen_id, 17], 
+    ['assign', Zoutput_len_id, 1], 
+    ['assign', Zoutput_ptr_id, 0],
+    ['assign', Zresult_id, 17],
+    ['assign', ZW_id, 2**32],
+    ['read', Zcounter_id, Zzero_id],
+    ['goto', Zcounter_id, 15],
+    ['*', Zresult_id, Zresult_id, Zresult_id],
+    ['/', Ztemp_id, Zresult_id, ZW_id],
+    ['*', Ztemp_id, Ztemp_id, ZW_id],
+    ['-', Zresult_id, Zresult_id, Ztemp_id],
+    ['-', Zcounter_id, Zcounter_id, Zone_id],
+    # TODO: lines 14-19 from pseudocode
+    # Line 14
+    ['goto', Zzero_id, 8],
+    # Line 15
+    ['*', Zresult_id, Zresult_id, Zseventeen_id],
+    # Line 16
+    ['/', Ztemp_id, Zresult_id, ZW_id],
+    # Line 17
+    ['*', Ztemp_id, Ztemp_id, ZW_id],
+    # Line 18
+    ['-', Zresult_id, Zresult_id, Ztemp_id],
+    # Line 19
+    ['write', Zoutput_ptr_id, Zresult_id]
+]
+
 def test() :
     tests["Example 0: Unit Tests"] = [
         {
@@ -200,6 +264,36 @@ def test() :
             "show_expectation": True
         },
         ]     
+    tests["Example 3:  Tests"] = [
+            {
+                "label": "Prog1(5)",
+                "input": 5,
+                "test": lambda n: simulator.executeProgram(prog1, [n])[0],
+                "expected": 17**((2**5)+1),
+                "show_expectation": True
+            },
+            {
+                "label": "Prog1(2)",
+                "input": 2,
+                "test": lambda n: simulator.executeProgram(prog1, [n])[0],
+                "expected": 17**((2**2)+1),
+                "show_expectation": True
+            },
+            {
+                "label": "Prog2(5)",
+                "input": 5,
+                "test": lambda n: simulator.executeProgram(prog2, [n])[0],
+                "expected": 17**((2**5)+1),
+                "show_expectation": True
+            },
+            {
+                "label": "Prog2(2)",
+                "input": 2,
+                "test": lambda n: simulator.executeProgram(prog2, [n])[0],
+                "expected": 17**((2**2)+1),
+                "show_expectation": True
+            }
+            ]
 
     number_passed = 0
     total_tests = 0
