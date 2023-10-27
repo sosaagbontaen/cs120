@@ -11,10 +11,12 @@ class timeout:
     def handle_timeout(self, signum, frame):
         raise TimeoutError(self.error_message)
     def __enter__(self):
-        signal.signal(signal.SIGALRM, self.handle_timeout)
-        signal.alarm(self.seconds)
+        #signal.signal(signal.SIGALRM, self.handle_timeout)
+        #signal.alarm(self.seconds)
+        pass
     def __exit__(self, type, value, traceback):
-        signal.alarm(0)
+        #signal.alarm(0)
+        pass
 class color:
    PURPLE = '\033[95m'
    CYAN = '\033[96m'

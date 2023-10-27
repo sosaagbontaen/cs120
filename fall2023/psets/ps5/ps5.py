@@ -108,6 +108,12 @@ def exhaustive_search_coloring(G, k=3):
     When you're finished, check your work by running python3 -m ps5_color_tests 2.
 '''
 
+def make_set(N):
+    n_set = set()
+    for i in range(N):
+        n_set.add(i)
+    return n_set
+
 # Given an instance of the Graph class G and a subset of precolored nodes,
 # Assigns precolored nodes to have color 2, and attempts to color the rest using colors 0 and 1.
 # Precondition: Assumes that the precolored_nodes form an independent set.
@@ -130,8 +136,44 @@ def bfs_2_coloring(G, precolored_nodes=None):
     # TODO: Complete this function by implementing two-coloring using the colors 0 and 1.
     # If there is no valid coloring, reset all the colors to None using G.reset_colors()
     
-    G.reset_colors()
-    return None
+    
+    frontier = set()
+    visited.add(0)
+    frontier.add(0)
+    G.colors[0] = 0
+    print("Frontier: ",frontier)
+    print("Visited: ",visited)
+    
+    # print(make_set(5).difference(visited))
+    temp_set = set()
+    while frontier:
+        if len(visited) < G.N:
+            unvisited = make_set(G.N).difference(visited)
+            # frontier is all unvisited nodes (v)
+            # that are connected to any of the current frontier nodes 
+
+            # check neighbors of frontier nodes
+            # any neighbor that's in unvisited constitutes of the new frontier
+            for node_index in frontier:
+                for neighbor in G.edges[node_index]:
+                    if neighbor in unvisited:
+                        # Frontier nodes colored here
+                        current_color = G.colors[node_index]
+                        next_color = 1 if G.colors[node_index] == 0 else 0
+                        print("NOTE, current color is",current_color,"next-color is ",next_color)
+                        print("Since node",node_index,"is color",current_color, end=" ")
+                        print("We have to color node",neighbor, "in color", next_color)
+                        G.colors[neighbor] = next_color
+                        temp_set.add(neighbor)
+
+            # Have to copy b/c in python it sets frontier = reference of temp_set by default
+            frontier = temp_set.copy()
+            temp_set.clear()
+            visited = visited.union(frontier)
+            print("F:",frontier,"V:",visited)
+        else:
+            break
+    return G
 
 '''
     Part B: Implement is_independent_set.
@@ -175,6 +217,21 @@ def iset_bfs_3_coloring(G):
 
 # Feel free to add miscellaneous tests below!
 if __name__ == "__main__":
-    G0 = Graph(2).add_edge(0, 1)
-    print(bfs_2_coloring(G0))
-    print(iset_bfs_3_coloring(G0))
+    G0 = Graph(3).add_edge(0, 1).add_edge(1, 2)
+    G1 = Graph(3).add_edge(0,1).add_edge(1,2).add_node().add_edge(2,3)
+    # print(bfs_2_coloring(G0))
+    # print(iset_bfs_3_coloring(G0))
+
+    print("Adjacency List:")
+    for i,v in enumerate(G1.edges):
+        print("Node",i,":",v)
+    print()
+    print("Exhaustive Coloring:")
+    exhaustive_search_coloring(G1)
+    for i,v in enumerate(G1.colors):
+        print("Node",i,":","COLOR",v)
+    print()
+    print("BFS 2-Coloring:")
+    bfs_2_coloring(G1)
+    for i,v in enumerate(G1.colors):
+        print("Node",i,":","COLOR",v)
